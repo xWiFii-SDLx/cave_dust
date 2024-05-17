@@ -5,11 +5,11 @@ import com.minelittlepony.common.client.gui.element.*;
 import net.lizistired.cavedust.utils.TranslatableTextHelper;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.NoSuchElementException;
 
 public class ModMenuConfigScreen extends GameGui {
     public ModMenuConfigScreen(@Nullable Screen parent) {
@@ -73,20 +73,15 @@ public class ModMenuConfigScreen extends GameGui {
         })).getStyle().setText("Particle: " + (getNameOfParticle()))
                 .setTooltip(Text.translatable("menu.cavedust.particle.tooltip"));
 
-        addButton(new Slider(left += 220, row -= 96, 1, 50, config.getDimensionsX()))
-                .onChange(config::setDimensionsX)
-                .setTextFormat(transText::formatMaxX)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.X.tooltip"));
+        addButton(new Slider(left += 220, row -= 96, 1, 50, config.getDimensionWidth()))
+                .onChange(config::setDimensionWidth)
+                .setTextFormat(transText::formatMaxWidth)
+                .getStyle().setTooltip(Text.translatable("menu.cavedust.width.tooltip"));
 
-        addButton(new Slider(left, row += 24, 1, 50, config.getDimensionsY()))
-                .onChange(config::setDimensionsY)
-                .setTextFormat(transText::formatMaxY)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.Y.tooltip"));
-
-        addButton(new Slider(left, row += 24, 1, 50, config.getDimensionsZ()))
-                .onChange(config::setDimensionsZ)
-                .setTextFormat(transText::formatMaxZ)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.Z.tooltip"));
+        addButton(new Slider(left, row += 24, 1, 50, config.getDimensionHeight()))
+                .onChange(config::setDimensionHeight)
+                .setTextFormat(transText::formatMaxHeight)
+                .getStyle().setTooltip(Text.translatable("menu.cavedust.height.tooltip"));
 
         addButton(new Slider(left, row += 24, 0, 10, config.getVelocityRandomness()))
                 .onChange(config::setVelocityRandomness)
@@ -94,9 +89,10 @@ public class ModMenuConfigScreen extends GameGui {
                 .getStyle().setTooltip(Text.translatable("menu.cavedust.velocityrandomness.tooltip"));
 
 
-        addButton(new Button(left -= 110, row += 60).onClick(sender -> {
+        addButton(new Button(left -= 110, row += 120).onClick(sender -> {
             config.resetConfig();
             finish();
+            client.setScreen(new ModMenuConfigScreen(parent));
         })).getStyle().setText(Text.translatable("menu.cavedust.reset")).setTooltip(Text.translatable("menu.cavedust.reset.tooltip"));
 
         addButton(new Button(left, row += 24)
@@ -114,6 +110,10 @@ public class ModMenuConfigScreen extends GameGui {
     private String getNameOfParticle(){
         CaveDustConfig config = CaveDust.getInstance().getConfig();
         config.load();
-        return Registries.PARTICLE_TYPE.getEntry(config.getParticleID()).get().getKey().get().getValue().toString();
+        try {
+            return Registries.PARTICLE_TYPE.getEntry(config.getParticleID()).get().getKey().get().getValue().toString();
+        } catch (NoSuchElementException e){
+            return "null";
+        }
     }
 }

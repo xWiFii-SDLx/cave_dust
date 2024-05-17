@@ -16,10 +16,9 @@ public class CaveDustConfig extends JsonFile {
     private transient final net.lizistired.cavedust.CaveDust CaveDust;
 
 
-    private int dimensionX = 5;
-    private int dimensionY = 5;
-    private int dimensionZ = 5;
-    private int velocityRandomness = 1;
+    private int width = 10;
+    private int height = 10;
+    private int velocityRandomness = 0;
 
     private boolean caveDustEnabled = true;
     private boolean seaLevelCheck = true;
@@ -37,40 +36,28 @@ public class CaveDustConfig extends JsonFile {
         this.CaveDust = caveDust;
     }
 
-    public float setDimensionsX(float size){
-        if (this.dimensionX != size) {
-            this.dimensionX = (int)size;
+    public float setDimensionWidth(float size){
+        if (this.width != size) {
+            this.width = (int)size;
             save();
         }
-        return getDimensionsX();
+        return getDimensionWidth();
     }
 
-    public float setDimensionsY(float size){
-        if (this.dimensionY != size) {
-            this.dimensionY = (int)size;
+    public float setDimensionHeight(float size){
+        if (this.height != size) {
+            this.height = (int)size;
             save();
         }
-        return getDimensionsY();
+        return getDimensionHeight();
     }
 
-    public float setDimensionsZ(float size){
-        if (this.dimensionZ != size) {
-            this.dimensionZ = (int)size;
-            save();
-        }
-        return getDimensionsZ();
+    public float getDimensionWidth(){
+        return width;
     }
 
-    public float getDimensionsX(){
-        return dimensionX;
-    }
-
-    public float getDimensionsY(){
-        return dimensionY;
-    }
-
-    public float getDimensionsZ(){
-        return dimensionZ;
+    public float getDimensionHeight(){
+        return height;
     }
 
     public float setUpperLimit(float upperLimit){
@@ -145,10 +132,11 @@ public class CaveDustConfig extends JsonFile {
         try {
             return (ParticleEffect) Registries.PARTICLE_TYPE.get(new Identifier(Registries.PARTICLE_TYPE.getEntry(getParticleID()).get().getKey().get().getValue().toString().toLowerCase()));
         } catch (ClassCastException e) {
-            MinecraftClient.getInstance().player.sendMessage(Text.literal("Issue loading particle, defaulting to white ash particle!"), false);
-            setParticleID(WHITE_ASH_ID);
+            MinecraftClient.getInstance().player.sendMessage(Text.translatable("debug.cavedust.particleerror"), true);
+            LOGGER.error("Cannot spawn particle, check config.");
+            iterateParticle();
             save();
-            return ParticleTypes.WHITE_ASH;
+            return getParticle();
         }
     }
 
@@ -210,15 +198,15 @@ public class CaveDustConfig extends JsonFile {
     }
 
     public void resetConfig(){
-        dimensionX = 5;
-        dimensionY = 5;
-        dimensionZ = 5;
+        width = 10;
+        height = 10;
 
         upperLimit = 64;
         lowerLimit = -64;
 
         particleMultiplier = 1;
         particleMultiplierMultiplier = 10;
+        velocityRandomness = 0;
 
         seaLevelCheck = true;
         caveDustEnabled = true;

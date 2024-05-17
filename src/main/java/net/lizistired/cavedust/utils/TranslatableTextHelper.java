@@ -6,14 +6,11 @@ import net.minecraft.text.Text;
 import javax.swing.*;
 
 public class TranslatableTextHelper {
-    public Text formatMaxX(AbstractSlider<Float> slider) {
-        return Text.translatable("menu.cavedust.X", (int)Math.floor(slider.getValue()));
+    public Text formatMaxWidth(AbstractSlider<Float> slider) {
+        return Text.translatable("menu.cavedust.width", (int)Math.floor(slider.getValue()));
     }
-    public Text formatMaxY(AbstractSlider<Float> slider) {
-        return Text.translatable("menu.cavedust.Y", (int)Math.floor(slider.getValue()));
-    }
-    public Text formatMaxZ(AbstractSlider<Float> slider) {
-        return Text.translatable("menu.cavedust.Z", (int)Math.floor(slider.getValue()));
+    public Text formatMaxHeight(AbstractSlider<Float> slider) {
+        return Text.translatable("menu.cavedust.height", (int)Math.floor(slider.getValue()));
     }
     public Text formatUpperLimit(AbstractSlider<Float> slider) {
         return Text.translatable("menu.cavedust.upperlimit", (int)Math.floor(slider.getValue()));

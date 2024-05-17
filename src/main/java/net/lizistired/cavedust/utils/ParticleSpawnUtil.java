@@ -14,6 +14,7 @@ public class ParticleSpawnUtil {
     private static float timer;
     public static boolean shouldParticlesSpawn;
 
+
     /**
      * Returns true if particles should spawn.
      * @param client MinecraftClient
@@ -67,6 +68,7 @@ public class ParticleSpawnUtil {
                 || client.world == null
                 || !client.world.getDimension().bedWorks()
                 || (client.world.getBottomY() > pos.getY())
+                //|| client.world.getBiome(Objects.requireNonNull(pos)).matchesKey(LUSH_CAVES))
                 || client.world.getBiome(Objects.requireNonNull(pos)).matchesKey(LUSH_CAVES))
 
         {
