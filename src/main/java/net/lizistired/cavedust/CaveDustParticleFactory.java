@@ -1,16 +1,16 @@
 package net.lizistired.cavedust;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class CaveDustParticleFactory extends SpriteBillboardParticle {
-    private final SpriteProvider spriteProvider;
-    CaveDustParticleFactory(ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
+    public static SpriteProvider spriteProvider;
+    public CaveDustParticleFactory(ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
         super(clientWorld, x, y, z);
-        this.spriteProvider = spriteProvider; //Sets the sprite provider from above to the sprite provider in the constructor method
+        CaveDustParticleFactory.spriteProvider = spriteProvider; //Sets the sprite provider from above to the sprite provider in the constructor method
         this.maxAge = 200; //20 ticks = 1 second
         this.scale = 0.1f;
         this.velocityX = velocityX; //The velX from the constructor parameters
@@ -38,7 +38,7 @@ public class CaveDustParticleFactory extends SpriteBillboardParticle {
         return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static class Factory implements ParticleFactory<DefaultParticleType> {
         private final SpriteProvider spriteProvider;
 
