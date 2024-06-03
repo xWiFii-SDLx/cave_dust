@@ -1,6 +1,7 @@
 package net.lizistired.cavedust;
 
 //minecraft imports
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.particle.ParticleTypes;
@@ -39,8 +40,7 @@ public class CaveDust implements ClientModInitializer {
 	public net.lizistired.cavedust.CaveDustConfig getConfig() {
 		return config;
 	}
-
-	public static int WHITE_ASH_ID = Registries.PARTICLE_TYPE.getRawId(ParticleTypes.WHITE_ASH);
+	public static int WHITE_ASH_ID = Registries.PARTICLE_TYPE.getRawId(CaveDustServer.CAVE_DUST);
 	public static int PARTICLE_AMOUNT = 0;
 
 
@@ -51,7 +51,7 @@ public class CaveDust implements ClientModInitializer {
 		config = new CaveDustConfig(CaveDustFolder.getParent().resolve("cavedust.json"), this);
 		config.load();
 		registerKeyBindings();
-
+		ParticleFactoryRegistry.getInstance().register(CaveDustServer.CAVE_DUST, CaveDustParticleFactory.Factory::new);
 		//register end client tick to create cave dust function, using end client tick for async
 		ClientTickEvents.END_CLIENT_TICK.register(this::createCaveDust);
 	}
@@ -78,20 +78,23 @@ public class CaveDust implements ClientModInitializer {
 
 		for (int i = 0; i < PARTICLE_AMOUNT; i++) {
 			try {
-				int x = (int) (client.player.getPos().getX() + (int) generateRandomDouble(config.getDimensionsX() * -1, config.getDimensionsX()));
-				int y = (int) (client.player.getPos().getY() + (int) generateRandomDouble(config.getDimensionsY() * -1, config.getDimensionsY()));
-				int z = (int) (client.player.getPos().getZ() + (int) generateRandomDouble(config.getDimensionsZ() * -1, config.getDimensionsZ()));
+				int x = (int) (client.player.getPos().getX() + (int) generateRandomDouble(config.getDimensionWidth() *-1, config.getDimensionWidth()));
+				int y = (int) (client.player.getEyePos().getY() + (int) generateRandomDouble(config.getDimensionHeight() *-1, config.getDimensionHeight()));
+				int z = (int) (client.player.getPos().getZ() + (int) generateRandomDouble(config.getDimensionWidth() *-1, config.getDimensionWidth()));
+				double miniX = (x + Math.random());
+				double miniY = (y + Math.random());
+				double miniZ = (z + Math.random());
 				BlockPos particlePos = new BlockPos(x, y, z);
 
 				if (shouldParticlesSpawn(client, config, particlePos)) {
 					if (client.world.getBlockState(particlePos).isAir()) {
-						world.addParticle(config.getParticle(), x, y, z, config.getVelocityRandomnessRandom(), config.getVelocityRandomnessRandom(), config.getVelocityRandomnessRandom());
+						world.addParticle(config.getParticle(), miniX, miniY, miniZ, config.getVelocityRandomnessRandom() * 0.01, config.getVelocityRandomnessRandom() * 0.01, config.getVelocityRandomnessRandom() * 0.01);
 					}
 				}
 			}
 			catch (NullPointerException e) {
 				LOGGER.error(String.valueOf(e));
-				getConfig().setParticleID(WHITE_ASH_ID);
+				//getConfig().setParticleID(WHITE_ASH_ID);
 			}
 		}
 	}

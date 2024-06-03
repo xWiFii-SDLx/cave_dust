@@ -35,6 +35,10 @@ public class MathHelper {
      * @return Random number (double)
      */
     public static double generateRandomDouble(double min, double max) {
-        return ThreadLocalRandom.current().nextDouble(min, max);
+        try {
+            return ThreadLocalRandom.current().nextDouble(min, max);
+        } catch (IllegalArgumentException e) {
+            return 0;
+        }
     }
 }

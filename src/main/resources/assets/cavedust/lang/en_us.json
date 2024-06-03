@@ -4,12 +4,10 @@
   "menu.cavedust.global.true": "Cave Dust: Enabled",
   "menu.cavedust.global.tooltip.false": "Enable cave dust particles?",
   "menu.cavedust.global.tooltip.true": "Disable cave dust particles?",
-  "menu.cavedust.X": "X bounds: %s",
-  "menu.cavedust.Y": "Y bounds: %s",
-  "menu.cavedust.Z": "Z bounds: %s",
-  "menu.cavedust.X.tooltip": "X axis bounds for particle spawning.",
-  "menu.cavedust.Y.tooltip": "Y axis bounds for particle spawning.",
-  "menu.cavedust.Z.tooltip": "Z axis bounds for particle spawning.",
+  "menu.cavedust.width": "Width bounds: %s",
+  "menu.cavedust.height": "Height bounds: %s",
+  "menu.cavedust.width.tooltip": "Maximum width to spawn particle.",
+  "menu.cavedust.height.tooltip": "Maximum height to spawn particle.",
   "menu.cavedust.upperlimit": "Upper limit height: %s",
   "menu.cavedust.lowerlimit": "Lower limit height: %s",
   "menu.cavedust.upperlimit.tooltip": "The height where particles will fade out and stop spawning (uses player y).",
@@ -37,6 +35,7 @@
 
   "debug.cavedust.toggle.true": "(Cave Dust) Enabled particles",
   "debug.cavedust.toggle.false": "(Cave Dust) Disabled particles",
-  "debug.cavedust.reload": "(Cave Dust) Reloaded config"
+  "debug.cavedust.reload": "(Cave Dust) Reloaded config",
+  "debug.cavedust.particleerror": "(Cave Dust) Error setting particle, skipping to next particle!"
 
 }

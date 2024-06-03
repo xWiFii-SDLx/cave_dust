@@ -14,7 +14,7 @@ import static net.lizistired.cavedust.utils.ParticleSpawnUtil.shouldParticlesSpa
 @Mixin(DebugHud.class)
 public abstract class MixinDebugScreenOverlay {
     @Inject(method = "getRightText", at = @At("RETURN"))
-    private void appendShaderPackText(CallbackInfoReturnable<List<String>> cir) {
+    private void appendDebugText(CallbackInfoReturnable<List<String>> cir) {
         List<String> messages = cir.getReturnValue();
 
         messages.add("");
