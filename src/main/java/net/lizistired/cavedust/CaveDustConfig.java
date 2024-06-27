@@ -130,7 +130,7 @@ public class CaveDustConfig extends JsonFile {
 
     public ParticleEffect getParticle(){
         try {
-            return (ParticleEffect) Registries.PARTICLE_TYPE.get(new Identifier(Registries.PARTICLE_TYPE.getEntry(getParticleID()).get().getKey().get().getValue().toString().toLowerCase()));
+            return (ParticleEffect) Registries.PARTICLE_TYPE.get(Identifier.of(Registries.PARTICLE_TYPE.getEntry(getParticleID()).get().getKey().get().getValue().toString().toLowerCase()));
         } catch (ClassCastException e) {
             MinecraftClient.getInstance().player.sendMessage(Text.translatable("debug.cavedust.particleerror"), true);
             LOGGER.error("Cannot spawn particle, check config.");
